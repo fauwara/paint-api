@@ -1,0 +1,14 @@
+-- postgres
+
+CREATE TABLE PIXEL (
+	X 		INTEGER 	NOT NULL,
+	Y 		INTEGER		NOT NULL,
+	COLOR 	TEXT,
+	TIME_ 	TIME,
+	PRIMARY KEY (X, Y)
+);
+
+
+-- insert into pixel
+INSERT INTO PIXEL ( X, Y, COLOR, TIME_)
+VALUES (0, 0, '#000000', CURRENT_TIME);
