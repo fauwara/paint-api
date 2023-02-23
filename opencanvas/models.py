@@ -12,6 +12,14 @@ class User(db.Model):
         return f"{self.username} {self.password}"
 
 
+class Canvas(db.Model):
+    width = db.Column(db.Integer, primary_key=True)
+    height = db.Column(db.Integer, primary_key=True)
+
+    def __repr__(self):
+        return f"{self.width} {self.height}"
+
+
 class Pixel(db.Model):
     x = db.Column(db.Integer, primary_key=True)
     y = db.Column(db.Integer, primary_key=True)
