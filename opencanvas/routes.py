@@ -1,4 +1,4 @@
-from flask import request, Response
+from flask import request, make_response, jsonify
 from flask import render_template
 
 import hashlib
@@ -23,6 +23,22 @@ def get_canvas_size():
     """get canvas size"""
 
     return { 'width': canvas.WIDTH, 'height': canvas.HEIGHT }
+
+
+@app.route("/canvas")
+def get_canvas():
+    pixels = db.session.execute(db.select(Pixel.color).order_by(Pixel.x, Pixel.y)).scalars()
+
+    canvas_data = []
+    temp_canvas_data = [pixel for pixel in pixels]
+    i = 0
+
+    for y in range(canvas.HEIGHT):
+        canvas_data.append(temp_canvas_data[y*canvas.WIDTH: (y*canvas.WIDTH) + canvas.WIDTH])
+    
+    return make_response(jsonify({"canvas_data": canvas_data}), 200)
+
+
 
 
 @app.route("/pixel/set", methods=['POST'])

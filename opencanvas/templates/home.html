@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,8 +8,38 @@
 	<link rel="stylesheet" href="static/styles.css">
 	<title>open-canvas</title>
 </head>
+
 <body>
-	<h1>welcome to open-canvas. ✨</h1>
-	<canvas></canvas>
+	<!-- <h1>welcome to open-canvas. ✨</h1> -->
+	<div class="main">
+		<canvas id="canvas" width="300" height="300"></canvas>
+	</div>
+
+	<script>
+
+		let canvasWidth = 3;
+		let cellWidth = 300/canvasWidth;
+
+		function displayCanvas (data) {
+			let count = 0;
+			for (let i = 0; i < 3; i++) {
+				for (let j = 0; j < 3; j++) {
+					ctx.fillStyle = data[j][i]
+					ctx.fillRect(0 + (j * cellWidth), 0 + (i * cellWidth), cellWidth, cellWidth);
+					count++;
+				}
+			}
+		};
+
+		const canvas = document.getElementById("canvas");
+		const ctx = canvas.getContext("2d");
+
+		fetch('canvas')
+   		.then(response => response.json())
+  		.then(result => displayCanvas(result.canvas_data));
+
+	</script>
+
 </body>
+
 </html>
