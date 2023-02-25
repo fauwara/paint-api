@@ -11,32 +11,85 @@
 
 <body>
 	<!-- <h1>welcome to open-canvas. ✨</h1> -->
-	<div class="main">
-		<canvas id="canvas" width="300" height="300"></canvas>
+	<div class="center">
+		<canvas id="canvas" class="canvas section" width="300" height="300"></canvas>
+		<div class="section">
+			<!-- <input type="button" value="Hide"/> -->
+			<input id="inputColor" type="color" value="#000000" />
+			<h3 style="text-align: center;">Choose your color</h3>
+		</div>
 	</div>
 
 	<script>
 
-		let canvasWidth = 3;
-		let cellWidth = 300/canvasWidth;
 
-		function displayCanvas (data) {
+		let canvasSize = 300;
+
+		function updateCanvasCell(cellWidth, canvas, event) {
+			const rect = canvas.getBoundingClientRect()
+			x = Math.floor((event.clientX - rect.left) / cellWidth);
+			y = Math.floor((event.clientY - rect.top) / cellWidth);
+			// console.log("x: " + x + " y: " + y);
+
+			let color = document.getElementById("inputColor").value;
+			color = color.replace('#', '');
+			console.log(color);
+
+			fetch("pixel/set", {
+				method: "post",
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+
+				//make sure to serialize your JSON body
+				body: JSON.stringify({
+					"x": x,
+					"y": y,
+					"color": color,
+					"user": "fauwara",
+				})
+				// body: `x=${x}&y=${y}&color=${color}&user=fauwara`
+			})
+				.then((response) => {
+					console.log(response);
+					//do something awesome that makes the world a better place
+				});
+		}
+
+		function displayCanvas(height, width, cellWidth, data) {
+
 			let count = 0;
-			for (let i = 0; i < 3; i++) {
-				for (let j = 0; j < 3; j++) {
-					ctx.fillStyle = data[j][i]
+			for (let i = 0; i < height; i++) {
+				for (let j = 0; j < width; j++) {
+					ctx.fillStyle = "#" + data[j][i]
 					ctx.fillRect(0 + (j * cellWidth), 0 + (i * cellWidth), cellWidth, cellWidth);
 					count++;
 				}
 			}
+
 		};
 
 		const canvas = document.getElementById("canvas");
 		const ctx = canvas.getContext("2d");
 
 		fetch('canvas')
-   		.then(response => response.json())
-  		.then(result => displayCanvas(result.canvas_data));
+			.then(response => response.json())
+			.then(result => {
+
+				let canvasHeight = result.size[0];
+				let canvasWidth = result.size[1];
+
+				let cellWidth = canvasSize / canvasWidth;
+
+				displayCanvas(canvasHeight, canvasWidth, cellWidth, result.data);
+
+				canvas.addEventListener('mousedown', function (e) {
+					updateCanvasCell(cellWidth, canvas, e);
+				})
+
+			});
+
 
 	</script>
 

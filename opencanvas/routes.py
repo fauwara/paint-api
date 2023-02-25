@@ -9,8 +9,8 @@ from opencanvas.models import Pixel, User
 
 # CONSTANTS
 class canvas:
-    WIDTH = 3
-    HEIGHT = 3
+    WIDTH = 20
+    HEIGHT = 20
 
 
 @app.route("/")
@@ -22,7 +22,8 @@ def hello():
 def get_canvas_size():
     """get canvas size"""
 
-    return { 'width': canvas.WIDTH, 'height': canvas.HEIGHT }
+    return make_response(jsonify({ 'width': canvas.WIDTH, 'height': canvas.HEIGHT }), 200)
+
 
 
 @app.route("/canvas")
@@ -31,12 +32,11 @@ def get_canvas():
 
     canvas_data = []
     temp_canvas_data = [pixel for pixel in pixels]
-    i = 0
 
     for y in range(canvas.HEIGHT):
         canvas_data.append(temp_canvas_data[y*canvas.WIDTH: (y*canvas.WIDTH) + canvas.WIDTH])
     
-    return make_response(jsonify({"canvas_data": canvas_data}), 200)
+    return make_response(jsonify({"size": [canvas.HEIGHT, canvas.WIDTH], "data": canvas_data}), 200)
 
 
 
@@ -62,7 +62,7 @@ def set_pixel():
 
         db.session.commit()
         
-        return { "msg": f"pixel {body['x'], body['y']} set to color: {body['color']}" }
+        return make_response(jsonify({ "msg": f"pixel {body['x'], body['y']} set to color: {body['color']}" }), 200) 
     return { "msg": f"pixel range out of bounds." }, 422
 
 
@@ -95,7 +95,7 @@ def populate_pixels():
     db.session.bulk_save_objects(canvas_data)
     db.session.commit()
     
-    return { "msg": f"created canvas of size ({body['width'], body['height']})" }
+    return { "msg": f"created canvas of size ({canvas.WIDTH, canvas.HEIGHT})" }
 
 
 
