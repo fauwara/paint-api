@@ -5,93 +5,74 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<link rel="stylesheet" href="static/styles.css">
+
 	<title>open-canvas</title>
 </head>
 
 <body>
-	<!-- <h1>welcome to open-canvas. ✨</h1> -->
-	<div class="center">
-		<canvas id="canvas" class="canvas section" width="300" height="300"></canvas>
-		<div class="section">
-			<!-- <input type="button" value="Hide"/> -->
-			<input id="inputColor" type="color" value="#000000" />
-			<h3 style="text-align: center;">Choose your color</h3>
+
+	<div class="sidebar">
+		<div class="alert alert-green">
+			<p>user: saved succesfully.</p>
+			<button>close</button>
+		</div>
+
+		<div class="alert alert-red">
+			<p>error loging in</p>
+			<button>close</button>
+		</div>
+
+		<!-- <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd"
+				d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+				clip-rule="evenodd"></path>
+		</svg> -->
+
+
+		<div id="authentication" class="authentication">
+			<div id="sign-up" class="form">
+				<input type="text" id="username-sign-up" class="" placeholder="username" required />
+				<input type="password" id="password-sign-up" class="" placeholder="password" required />
+				<button type="submit" onclick="signUp()" class="">sign-up</button>
+			</div>
+
+			<!-- <hr class="w-48 h-1 mx-auto bg-gray-100 border-0 rounded "> -->
+
+			<div id="sign-in" class="form">
+				<input type="text" id="username-sign-in" class="" placeholder="username" required />
+				<input type="password" id="password-sign-in" class="" placeholder="password" required />
+				<button type="submit" onclick="signIn()" class="">sign-in</button>
+			</div>
+
+		</div>
+
+		<div class="my-5">
+			<p class="my-2">Welcome, User ✨</p>
+			<button type="button" id="sign-out" class="">sign-out</button>
+		</div>
+
+	</div>
+
+
+
+	<div class="canvas-section">
+
+		<div class="alert alert-red">
+			<p>rate limit! wait 5 mins from last modified time</p>
+			<button>close</button>
+		</div>
+
+		<canvas id="canvas" class="canvas" width="300" height="300"></canvas>
+		<div>
+			<input id="inputColor" class="" type="color" value="#000000" />
+			<h3>Choose your color</h3>
 		</div>
 	</div>
 
-	<script>
 
-
-		let canvasSize = 300;
-
-		function updateCanvasCell(cellWidth, canvas, event) {
-			const rect = canvas.getBoundingClientRect()
-			x = Math.floor((event.clientX - rect.left) / cellWidth);
-			y = Math.floor((event.clientY - rect.top) / cellWidth);
-			// console.log("x: " + x + " y: " + y);
-
-			let color = document.getElementById("inputColor").value;
-			color = color.replace('#', '');
-			console.log(color);
-
-			fetch("pixel/set", {
-				method: "post",
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				},
-
-				//make sure to serialize your JSON body
-				body: JSON.stringify({
-					"x": x,
-					"y": y,
-					"color": color,
-					"user": "fauwara",
-				})
-				// body: `x=${x}&y=${y}&color=${color}&user=fauwara`
-			})
-				.then((response) => {
-					console.log(response);
-					//do something awesome that makes the world a better place
-				});
-		}
-
-		function displayCanvas(height, width, cellWidth, data) {
-
-			let count = 0;
-			for (let i = 0; i < height; i++) {
-				for (let j = 0; j < width; j++) {
-					ctx.fillStyle = "#" + data[j][i]
-					ctx.fillRect(0 + (j * cellWidth), 0 + (i * cellWidth), cellWidth, cellWidth);
-					count++;
-				}
-			}
-
-		};
-
-		const canvas = document.getElementById("canvas");
-		const ctx = canvas.getContext("2d");
-
-		fetch('canvas')
-			.then(response => response.json())
-			.then(result => {
-
-				let canvasHeight = result.size[0];
-				let canvasWidth = result.size[1];
-
-				let cellWidth = canvasSize / canvasWidth;
-
-				displayCanvas(canvasHeight, canvasWidth, cellWidth, result.data);
-
-				canvas.addEventListener('mousedown', function (e) {
-					updateCanvasCell(cellWidth, canvas, e);
-				})
-
-			});
-
-
-	</script>
+	<script src="../static/index.js"></script>
 
 </body>
 

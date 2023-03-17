@@ -1,4 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+:root {
+	--clr-white: rgba(255, 255, 255, 1);
+	--clr-black: rgba(0, 0, 0, 1);
+
+	--clr-green: rgba(4, 108, 78, 1);
+	--clr-green-trans: rgba(4, 108, 78, 0.2);
+	
+	--clr-red: rgba(200, 30, 30, 1);
+	--clr-red-trans: rgba(200, 30, 30, 0.2);
+}
 
 * {
 	padding: 0px;
@@ -7,43 +16,100 @@
 	font-family: 'Source Sans Pro', sans-serif;
 }
 
-.section {
-	margin: 20px 0px;
-	max-width: 300px;
-}
-
-
-.center {
+body {
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
+
+	font-family: monospace;
 }
 
-.canvas {
-	border-radius: 5px;
-	/* width: 100%; */
-}
-
-/* input[type="button"] {
-	padding: 10px;
+button {
 	border: none;
 	outline: none;
-	border-radius: 5px;
-	background-color: black;
-	color: white;
-	width: 100%;
 	cursor: pointer;
+	
+	padding: 5px 15px;
+	border-radius: 5px;
+}
+
+.sidebar {
+	width: 400px;
+}
+
+.alert {
+
+	margin: 5px;
+	padding: 5px;
+
+	border-radius: 5px;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.alert-green {
+
+	color: var(--clr-green);
+	background: var(--clr-green-trans);
+	
+	border: solid 2px var(--clr-green);
+}
+
+.alert-red {
+
+	color: var(--clr-red);
+	background: var(--clr-red-trans);
+	
+	border: solid 2px var(--clr-red);
+}
+
+.alert button {
+	color: white;
 	font-weight: 600;
-	font-size: medium;
-} */
+}
+
+.alert-green button {
+	
+	background-color: var(--clr-green);
+}
+
+.alert-red button {
+	
+	background-color: var(--clr-red);
+}
+
+
+.form {
+
+	margin: 5px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+
+input[type=text], input[type=password] {
+	
+	padding: 10px 10px;
+
+	border: solid 1px var(--clr-black);
+	border-radius: 5px;
+}
+
+
+.canvas-section {
+	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+}
+
+
 
 input[type="color"] {
+	appearance: none;
 	-webkit-appearance: none;
 	border: none;
-	width: 300px;
-	height: 35px;
 	border-radius: 10px;
 }
 input[type="color"]::-webkit-color-swatch-wrapper {

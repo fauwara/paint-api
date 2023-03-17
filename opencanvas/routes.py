@@ -1,6 +1,7 @@
 from flask import request, make_response, jsonify
 from flask import render_template
 
+import datetime
 import hashlib
 
 from opencanvas import app, db
@@ -28,6 +29,8 @@ def get_canvas_size():
 
 @app.route("/canvas")
 def get_canvas():
+    """get canvas size and canvas data"""
+
     pixels = db.session.execute(db.select(Pixel.color).order_by(Pixel.x, Pixel.y)).scalars()
 
     canvas_data = []
@@ -57,8 +60,12 @@ def set_pixel():
 
     if not (body['x'] > canvas.WIDTH or body['y'] > canvas.HEIGHT):
         pixel = Pixel.query.get((body['x'], body['y']))
+        user = User.query.get(body['user'])
+        
         pixel.color = body['color']
         pixel.user = body['user']
+
+        user.last_modified = datetime.datetime.now()
 
         db.session.commit()
         

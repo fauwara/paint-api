@@ -5,6 +5,7 @@ class User(db.Model):
     # id_ = db.Coloumn(db.Integer, primary_key=True)
     username = db.Column(db.String, primary_key=True)
     password = db.Column(db.String, nullable=False)
+    last_modified = db.Column(db.Time, nullable=False)
 
     pixel = db.relationship('Pixel', backref='username', lazy=True)
 
@@ -12,12 +13,12 @@ class User(db.Model):
         return f"{self.username} {self.password}"
 
 
-class Canvas(db.Model):
-    width = db.Column(db.Integer, primary_key=True)
-    height = db.Column(db.Integer, primary_key=True)
+# class Canvas(db.Model):
+#     width = db.Column(db.Integer, primary_key=True)
+#     height = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return f"{self.width} {self.height}"
+#     def __repr__(self):
+#         return f"{self.width} {self.height}"
 
 
 class Pixel(db.Model):
