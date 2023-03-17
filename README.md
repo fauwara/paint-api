@@ -9,3 +9,4 @@ an API to paint on a canvas, for me to learn more about API building ig.
 
 ## TODO:
 [ ] change flask to flask api
+(not really happy with how half the application is built rest-apish and half is flaskish taking form data will have to do quite a bit of rework whihc i dont know if i wanna do 😭)
